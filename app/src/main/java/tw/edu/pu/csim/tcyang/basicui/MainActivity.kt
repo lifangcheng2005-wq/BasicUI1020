@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -84,6 +85,10 @@ fun Main(modifier: Modifier = Modifier) {
 
     // 使用 remember 儲存 MediaPlayer 實例
     var mper: MediaPlayer? by remember { mutableStateOf(null) }
+
+    val toggleImages = listOf(R.drawable.animal2, R.drawable.animal3)
+    val toggleNames = listOf("青蛙", "貓頭鷹")
+    var currentImageIndex by remember { mutableStateOf(0) }
 
     // 使用 DisposableEffect 來管理 MediaPlayer 的生命週期
     // 當 Main Composable 離開組合時，會執行 onDispose 區塊
@@ -258,7 +263,22 @@ fun Main(modifier: Modifier = Modifier) {
 
                 ) {
                 Text(text = "結束App")
-            }
-        }
+            }}
+            Image(
+                painter = painterResource(id = toggleImages[currentImageIndex]),
+                contentDescription = toggleNames[currentImageIndex],
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .size(height = 250.dp, width = 250.dp)
+                    .clickable {
+                        currentImageIndex = (currentImageIndex + 1) % toggleImages.size
+
+                        val currentAnimalName = toggleNames[currentImageIndex]
+                        Toast.makeText(context, "圖片已切換為：$currentAnimalName", Toast.LENGTH_SHORT).show()
+                    }
+            )
+
+            Spacer(modifier = Modifier.size(10.dp))
+
     }
 }
