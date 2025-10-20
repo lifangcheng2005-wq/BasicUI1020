@@ -1,29 +1,44 @@
 package tw.edu.pu.csim.tcyang.basicui
 
 
+import android.app.Activity
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -60,6 +75,15 @@ fun Main(modifier: Modifier = Modifier) {
 
     var AnimalsName = arrayListOf("鴨子","企鵝",
         "青蛙","貓頭鷹","海豚", "牛", "無尾熊", "獅子", "狐狸", "小雞")
+
+    var flag by remember{ mutableStateOf("text") }
+
+    // 取得當前的 Context
+    val context = LocalContext.current
+
+    // 使用 remember 儲存 MediaPlayer 實例
+    var mper: MediaPlayer? by remember { mutableStateOf(null) }
+
 
 
     Column (
@@ -128,8 +152,94 @@ fun Main(modifier: Modifier = Modifier) {
 
 
         }
+        Spacer(modifier = Modifier.size(10.dp))
 
 
 
+        Button(
+            onClick = {
+                if (flag == "text"){
+                    flag = "abc"
+                }
+                else{
+                    flag = "text"
+                }
+
+                Toast.makeText(
+                    context,
+                    "Compose 按鈕被點擊了！",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+
+        ) {
+            Text("按鈕測試")
+        }
+
+        Text(text = flag)
+
+        Spacer(modifier = Modifier.size(10.dp))
+        Row{
+            Button(onClick = {
+
+
+                },
+
+                modifier = Modifier
+                    .fillMaxWidth(0.33f)
+                    .fillMaxHeight(0.8f),
+
+                colors = buttonColors(Color.Green)
+
+            ) {
+                Text(text = "歡迎", color = Color.Blue)
+                Text(text = "修課", color = Color.Red)
+                Image(painterResource(id = R.drawable.teacher),
+                    contentDescription ="teacher icon")
+            }
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Button(onClick = {
+            },
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .fillMaxHeight(0.4f),
+                colors = buttonColors(Color.Blue)
+
+            ) {
+                Text(text = "展翅飛翔",color = Color.White)
+                Image(
+                    painterResource(id = R.drawable.fly),
+                    contentDescription ="fly icon")
+
+            }
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Button(onClick = {
+
+                val activity = context as? Activity
+                activity?.finish()
+
+                },
+
+                // 設定按鈕顏色為亮藍色
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFFF)),
+
+                //形狀：將元素的每個角落「切掉」一個直角
+                shape = CutCornerShape(10),
+
+                //藍色框線
+                border = BorderStroke(1.dp, Color.Blue),
+
+                //陰影
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp)
+
+                ) {
+                Text(text = "結束App")
+            }
+        }
     }
 }
